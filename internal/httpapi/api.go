@@ -44,6 +44,10 @@ func decodeJSON(r *http.Request, v any) error {
 	if err := dec.Decode(v); err != nil {
 		return fmt.Errorf("%w: %v", ErrBadJSON, err)
 	}
+	var extra any
+	if err := dec.Decode(&extra); err != io.EOF {
+		return ErrBadJSON
+	}
 	return nil
 }
 
